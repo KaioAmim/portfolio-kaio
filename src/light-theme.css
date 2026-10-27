@@ -1,0 +1,44 @@
+/* Blue accents only in the light theme; dark theme keeps its violet identity. */
+:root[data-theme='light'] {
+  --paper: #f6f8fc;
+  --surface: #ffffff;
+  --accent: #2563eb;
+  --accent-soft: #245bc4;
+  --visual-ink: #102344;
+}
+:root[data-theme='light'] .hero-accent { color: #2563eb; }
+:root[data-theme='light'] .hero { background-image: radial-gradient(ellipse at 80% 45%,#2563eb06,transparent 65%); }
+:root[data-theme='light'] .cursor-glow { background: radial-gradient(circle,#3b82f61c 0%,#2563eb09 35%,transparent 70%); }
+:root[data-theme='light'] .robot-volume,
+:root[data-theme='light'] .holo-dashboards,
+:root[data-theme='light'] .emblem-svg { filter: hue-rotate(-45deg); }
+:root[data-theme='light'] .process-progress > div,
+:root[data-theme='light'] .skill-meter i.filled { background: linear-gradient(90deg,#2563eb,#79b4ff); box-shadow: 0 0 14px #2563eb25; }
+:root[data-theme='light'] .work-copy .work-link { background: #2563eb; border-color: #3976f5; box-shadow: 0 6px 16px #2563eb20; }
+:root[data-theme='light'] .work-copy .work-link:hover,
+:root[data-theme='light'] .conversation-button:hover { background: #1d4ed8; box-shadow: 0 8px 25px #2563eb30; }
+:root[data-theme='light'] .conversation-button { box-shadow: 0 8px 25px #2563eb20; }
+:root[data-theme='light'] .ongoing-tag,
+:root[data-theme='light'] .timeline-tag,
+:root[data-theme='light'] .process-advance,
+:root[data-theme='light'] .robot-views button[aria-pressed='true'] { background: #2563eb0c; border-color: #2563eb45; }
+:root[data-theme='light'] .process-advance:hover { background: #2563eb18; }
+:root[data-theme='light'] .timeline-entry article { background: linear-gradient(135deg,#2563eb06,transparent); }
+:root[data-theme='light'] .timeline-entry article:hover { background: #2563eb08; }
+:root[data-theme='light'] .timeline-node { box-shadow: 0 0 0 7px var(--paper),0 0 24px #2563eb20; }
+:root[data-theme='light'] .profile-photo { border-color: #2563eb50; background: linear-gradient(135deg,#2563eb15,transparent); }
+:root[data-theme='light'] .photo-placeholder { border-color: #2563eb40; }
+:root[data-theme='light'] .process-emblem { background: radial-gradient(ellipse,#2563eb0b,transparent 67%); }
+:root[data-theme='light'] .process-detail { background: linear-gradient(120deg,#2563eb05,transparent); }
+:root[data-theme='light'] .process-track button[aria-pressed='true'] .process-dot { box-shadow: 0 0 0 7px #2563eb0b,0 0 35px #2563eb20; }
+:root[data-theme='light'] .process-four .stage-complete .process-dot { box-shadow: 0 0 14px #2563eb20; }
+:root[data-theme='light'] .work-card:hover,
+:root[data-theme='light'] .work-card:focus-within { border-color: #6b9ef5; box-shadow: 0 18px 35px #10234415,0 0 30px #2563eb08; }
+:root[data-theme='light'] .contact-panel { background: radial-gradient(ellipse at 0 100%,#2563eb0b,transparent 65%),var(--surface); }
+:root[data-theme='light'] .contact-status i { box-shadow: 0 0 12px #2563eb50; }
+:root[data-theme='light'] .technology-logo svg { filter: drop-shadow(0 0 14px #2563eb18); }
+:root[data-theme='light'] .editorial-01 { background: #e5edff; color: #193f8e; }
+:root[data-theme='light'] .intro-loader { background: #f6f8fc; color: #29384d; }
+:root[data-theme='light'] .intro-words { color: #2563eb; }
+:root[data-theme='light'] .intro-loader > button { color: #53647d; border-color: #2563eb30; }
+:root[data-theme='light'] .mobile-menu .eyebrow { color: #dbeafe; }
