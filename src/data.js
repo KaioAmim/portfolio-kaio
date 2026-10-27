@@ -12,6 +12,7 @@ export const profile = {
     { title: 'Téc. Desenvolvimento de Sistemas', subtitle: 'Etec Coronel Raphael Brandão', period: 'Concluído em Dez/2024', description: '' },
   ],
   extracurricular: [
+    { title: 'Formação GitHub Certification', subtitle: 'DIO', period: '12/09/2026', description: 'Bootcamp concluído na DIO. Certificado de conclusão da Formação GitHub Certification.' },
     { title: 'Agentes de IA em Campo', subtitle: 'DIO / AWS', period: 'Ago/2026', description: 'Amazon Bedrock e engenharia de prompts.' },
     { title: 'Inglês para Programadores', subtitle: 'Danki Code', period: 'Jul/2025', description: '' },
   ],
