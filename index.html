@@ -2,13 +2,22 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#181818" />
-    <meta name="description" content="Kaio Amim — Desenvolvedor Backend e Web. Conheça meus projetos, minha trajetória em tecnologia e entre em contato." />
-    <title>Kaio Amim — Desenvolvedor Backend & Web</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#111016" />
+    <script>try{document.documentElement.dataset.theme=localStorage.getItem("kaio-theme")||"dark"}catch{document.documentElement.dataset.theme="dark"}</script>
+    <meta name="description" content="Kaio Amim, desenvolvedor de software com foco em backend e web. Conheça meus projetos, minha trajetória e baixe meu currículo." />
+    <meta property="og:title" content="Kaio Amim — Portfólio" />
+    <meta property="og:description" content="Kaio Amim — desenvolvimento backend e web. Projetos, experiência e formação." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://kaio-amim-portfolio.fabledmelon65.chatgpt.site" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>Kaio Amim — Portfólio</title>
+  <style>html[data-theme=light] #startup{background:#f7f6fb!important;color:#7150c6!important}</style>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root"><div id="startup" role="status" style="position:fixed;inset:0;display:grid;place-content:center;gap:20px;text-align:center;background:#111016;color:#a58bff;font:16px system-ui"><span style="font:42px monospace">Carregando <span style="color:#a58bff">ideias</span></span><span></span></div></div>
+    <noscript><style>#startup{display:none!important}</style><p>Ative o JavaScript para explorar o portfólio. Contato: <a href="mailto:kaioamim.contato@gmail.com">kaioamim.contato@gmail.com</a></p></noscript>
+    <script>window.addEventListener('error',function(event){if(event.target&&event.target.tagName==='SCRIPT'){var node=document.getElementById('startup');if(node){node.textContent='Não foi possível carregar o portfólio. ';var link=document.createElement('a');link.href='/offline.html';link.textContent='Ver opções de recuperação';link.style.color='inherit';node.appendChild(link)}}},true)</script>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
