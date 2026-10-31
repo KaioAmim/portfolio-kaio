@@ -1,1 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="18" fill="#111113"/><path d="M18 15v34m3-16 23-18M21 33l25 16" fill="none" stroke="#a58bff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <title>KA — Kaio Amim</title>
+  <rect width="64" height="64" rx="13" fill="#140f1c"/>
+  <path fill="#fff" d="M7 17h4v30H7zM12.5 28.5 25.3 17H32L12.5 33z"/>
+  <path fill="#893bff" d="m13.5 34 4-3 16 16h-6z"/>
+  <path d="m30 45 12-23q1.8-3.5 3.6 0L57 45" fill="none" stroke="#fff" stroke-width="4.5" stroke-linecap="round"/>
+  <path fill="#893bff" d="M36 38.5q7-3 14 0l-1.5-3q-5.5-2.4-11 0z"/>
+</svg>
