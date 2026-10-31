@@ -1,0 +1,20 @@
+.ka-artwork { display: block; overflow: hidden; flex-shrink: 0; }
+.ka-brand { gap: 12px; flex-shrink: 0; }
+.ka-brand-symbol { display: grid; place-items: center; width: 46px; height: 40px; padding: 5px; border-radius: 8px; background: #140f1c; flex-shrink: 0; }
+.ka-brand-symbol .ka-monogram { width: 100%; height: auto; }
+.ka-brand .ka-wordmark { width: 164px; height: auto; }
+html[data-theme="light"] .ka-wordmark { filter: brightness(0) saturate(100%); opacity: .86; }
+.contact-id .ka-contact-logo { width: 118px; padding: 12px; background: #140f1c; border: 1px solid #893bff40; border-radius: 12px; flex-shrink: 0; }
+.ka-contact-logo .ka-full { width: 100%; height: auto; }
+.status-page > .ka-brand { position: absolute; top: 30px; left: 35px; }
+@media (max-width: 850px) {
+  .ka-brand { gap: 9px; }
+  .ka-brand .ka-wordmark { width: 140px; }
+}
+@media (max-width: 380px) {
+  .ka-brand .ka-wordmark { width: 123px; }
+  .ka-brand-symbol { width: 40px; height: 36px; }
+  .contact-id { gap: 12px; }
+  .contact-id .ka-contact-logo { width: 98px; padding: 9px; }
+  .contact-id h3 { font-size: 23px; }
+}

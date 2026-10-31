@@ -3,6 +3,7 @@ import { ArrowUpRight, ArrowDown, ArrowRight, ArrowUp, Github, Linkedin, Mail, D
 import { profile, projects, skills, timeline } from './content';
 import Carousel from './components/Carousel';
 import Contact from './components/Contact';
+import Brand from './components/Brand';
 import HeroScene from './components/HeroScene';
 import Process from './components/Process';
 import TransitionPanel from './components/TransitionPanel';
@@ -12,9 +13,6 @@ import { BootScreen, CursorGlow, ThemeToggle } from './components/Experience';
 const nav = [['inicio', 'Início'], ['projetos', 'Projetos'], ['sobre', 'Sobre mim'], ['contato', 'Contato']];
 const external = { target: '_blank', rel: 'noopener noreferrer' };
 
-function Brand() {
-  return <a href="#inicio" className="brand" aria-label="Kaio Amim, início"><span className="brand-mark" aria-hidden="true">k<span>.</span></span><span>kaio amim<span className="brand-dot">.</span></span></a>;
-}
 
 function ProjectCard({ project, onDetails, reduced }) {
   const ref = useRef(null);
