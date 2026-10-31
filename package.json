@@ -1,5 +1,5 @@
 {
-  "name": "kaio-portfolio",
+  "name": "kaio-amim-portfolio",
   "private": true,
   "version": "1.0.0",
   "type": "module",
@@ -9,12 +9,16 @@
     "preview": "vite preview --host 0.0.0.0"
   },
   "dependencies": {
-    "@vitejs/plugin-react": "latest",
-    "framer-motion": "latest",
-    "lucide-react": "latest",
-    "react": "latest",
-    "react-dom": "latest",
-    "react-icons": "^5.7.0",
-    "vite": "latest"
+    "@fontsource/manrope": "^5.2.5",
+    "@fontsource/outfit": "^5.2.5",
+    "lucide-react": "^0.468.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "three": "^0.170.0",
+    "simple-icons": "^15.0.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^6.0.5"
   }
 }

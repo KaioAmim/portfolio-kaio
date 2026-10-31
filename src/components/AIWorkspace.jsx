@@ -1,0 +1,8 @@
+import { lazy, Suspense, useState } from 'react';
+import { Bot, BrainCircuit, Network, Database, RotateCcw, RotateCw } from 'lucide-react';
+const Sculpture=lazy(()=>import('./Sculpture'));
+const nodes=[{id:'neural',label:'Rede neural',Icon:BrainCircuit,note:'Conexões entre dados e modelos.'},{id:'agents',label:'Agentes',Icon:Bot,note:'Agentes de IA e engenharia de prompts.'},{id:'data',label:'Dados',Icon:Database,note:'Dados estruturados e APIs.'}];
+export default function AIWorkspace({paused,onReady}){
+ const [mode,setMode]=useState('neural'),[turn,setTurn]=useState(0),[reset,setReset]=useState(0);
+ return <div className="ai-workspace"><div className="ai-mindmap" aria-label="Explorar a cena de inteligência artificial"><svg viewBox="0 0 500 340" preserveAspectRatio="none" aria-hidden="true"><path d="M245 210C165 160 90 130 65 55M245 210C320 170 370 130 430 60M245 210C340 230 370 280 440 300"/></svg>{nodes.map(({id,label,Icon})=><button key={id} className={`ai-node ai-node-${id}`} aria-pressed={mode===id} onClick={()=>setMode(id)}><Icon size={19}/><span>{label}</span></button>)}</div><Suspense fallback={<div className="terminal-fallback"><BrainCircuit size={60}/></div>}><Sculpture paused={paused} onReady={onReady} mode={mode} turn={turn} reset={reset}/></Suspense><div className="workspace-toolbar"><span><Network size={13}/>{nodes.find(n=>n.id===mode).note}</span><button className="icon-button" aria-label="Girar notebook" onClick={()=>setTurn(t=>t+1)}><RotateCw size={16}/></button><button className="icon-button" aria-label="Restaurar posição do notebook" onClick={()=>{setTurn(0);setReset(n=>n+1);}}><RotateCcw size={16}/></button></div></div>;
+}

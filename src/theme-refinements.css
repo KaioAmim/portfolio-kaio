@@ -1,0 +1,35 @@
+/* Keep the marquee and its control in one compact flow. */
+.portrait-art{overflow:hidden;border:1px solid var(--soft-border);border-radius:20px;isolation:isolate;min-height:480px}
+.about-portrait{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 26%}
+.portrait-art:after{content:'';position:absolute;inset:0;width:100%;height:100%;background:linear-gradient(0deg,#100d20c9,transparent 45%);pointer-events:none;z-index:1}
+.portrait-art .monogram-caption,.portrait-art .about-sticker{z-index:2}
+.stack-filters{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:36px}
+.stack-filters button{display:flex;align-items:center;gap:12px;padding:15px 18px;border:1px solid var(--soft-border);border-radius:10px;background:transparent;color:var(--text);cursor:pointer;font:inherit;font-size:13px;transition:background .2s,border-color .2s}
+.stack-filters button small{margin-left:14px;font-variant-numeric:tabular-nums;opacity:.65}
+.stack-filters button[aria-pressed=true]{color:var(--purple);border-color:var(--purple);background:color-mix(in srgb,var(--purple),transparent 92%)}
+.stack-filters button:focus-visible{outline:2px solid var(--purple);outline-offset:4px}
+@media(max-width:640px){.stack-filters{display:grid;grid-template-columns:1fr 1fr}.stack-filters button{padding:12px 10px;gap:7px;font-size:11px}.stack-filters button small{margin-left:auto}.portrait-art{min-height:440px}}
+.skills-details.section{padding-bottom:28px}
+.stack-marquee{margin-top:26px;padding:0;background:var(--strip-bg)}
+.stack-marquee .technology-marquee{padding:22px 0 18px;border-bottom:0}
+.stack-marquee-controls{display:flex;justify-content:center;padding:2px 0 14px}
+.stack-marquee-controls .icon-button{position:static;width:28px;height:28px;color:var(--purple);background:var(--bg)}
+.stack-marquee-controls .icon-button:hover{border-color:var(--purple)}
+.process-meter i,.skill-meter i.filled{background:linear-gradient(90deg,var(--purple),color-mix(in srgb,var(--purple),white 28%));box-shadow:0 0 12px color-mix(in srgb,var(--purple),transparent 85%)}
+.skill-row:hover .skill-meter i.filled{box-shadow:0 0 15px color-mix(in srgb,var(--purple),transparent 65%)}
+.process-steps button[aria-pressed=true]>span{box-shadow:0 0 0 7px color-mix(in srgb,var(--purple),transparent 93%)}
+.process-emblem{background:radial-gradient(ellipse,color-mix(in srgb,var(--purple),transparent 93%),transparent 67%)}
+.hero-art:before,.about-art{background:radial-gradient(ellipse,color-mix(in srgb,var(--purple),transparent 91%),transparent 70%)}
+.intro-loader>button{border-color:var(--soft-border)}
+/* Recolor monochrome artwork, including canvas pixels, without filtering controls. */
+:root[data-theme=light] .robot-volume,
+:root[data-theme=light] .holo-dashboards,
+:root[data-theme=light] .emblem-svg{filter:hue-rotate(-40deg) saturate(1.15)}
+:root[data-theme=light] .emblem-svg{filter:hue-rotate(-40deg) saturate(1.15) brightness(.76)}
+:root[data-theme=light] .monogram{text-shadow:4px 5px 0 #8eb8ec,7px 9px 0 #bdd4f2,15px 20px 25px var(--shadow)}
+:root[data-theme=light] .robot-views button[aria-pressed=true]{background:#2f6fc412}
+:root[data-theme=light] .hero{background-image:radial-gradient(ellipse at 80% 45%,#2f6fc405,transparent 65%)}
+:root[data-theme=light] .button-primary,:root[data-theme=light] .project-link{box-shadow:0 5px 22px #2f6fc41c}
+:root[data-theme=light] .project-link:hover{box-shadow:0 7px 28px #2f6fc433}
+:root[data-theme=light] .timeline-icon.current{box-shadow:0 0 20px #2f6fc41c}
+@media(max-width:640px){.skills-details.section{padding-bottom:20px}.stack-marquee{margin-top:22px}.stack-marquee .technology-marquee{padding:18px 0 14px}.process-steps:before,.process-steps:after{top:20px}}

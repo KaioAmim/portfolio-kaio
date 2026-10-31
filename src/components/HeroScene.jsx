@@ -1,7 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 
 const views = [0, Math.PI / 4, Math.PI / 2, Math.PI]
-export default function HeroScene() {
+export default function HeroScene({paused=false,onReady}) {
+  const pausedRef=useRef(paused);
+  useEffect(()=>{pausedRef.current=paused},[paused]);
+  const readyRef=useRef(onReady);
   const canvasRef = useRef(null)
   const target = useRef({ yaw: 0, pitch: -.08 })
   const drag = useRef(null)
@@ -24,11 +27,11 @@ export default function HeroScene() {
   useEffect(() => {
     const canvas = canvasRef.current, ctx = canvas.getContext('2d')
     const reduced = matchMedia('(prefers-reduced-motion: reduce)')
-    let width = 0, height = 0, frame, last = 0, time = 0, yaw = 0, pitch = -.08, visible = true
+    let width = 0, height = 0, frame, last = 0, time = 0, rendered = false, yaw = 0, pitch = -.08, visible = true
     const observer = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting })
     observer.observe(canvas)
     const resize = new ResizeObserver(([entry]) => {
-      width = entry.contentRect.width; height = entry.contentRect.height
+      rendered=false; width = entry.contentRect.width; height = entry.contentRect.height
       const dpr = Math.min(devicePixelRatio, 2)
       canvas.width = width * dpr; canvas.height = height * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
     })
@@ -36,7 +39,7 @@ export default function HeroScene() {
     // Each contour consists of real XYZ vertices, projected only after rotation.
     const meshes = []
     const add = (center, scale, box = 1, brain = false, taper = 0) => {
-      const rows = [], columns = 22, levels = brain ? 18 : 12
+      const rows = [], columns = 18, levels = brain ? 16 : 10
       const power = v => Math.sign(v) * Math.pow(Math.abs(v), box)
       for (let j = 0; j <= levels; j++) {
         const lat = j / levels * Math.PI, row = []
@@ -59,8 +62,10 @@ export default function HeroScene() {
       frame = requestAnimationFrame(draw)
       if (now - last < 1000 / 30) return
       const dt = Math.min((now - last) / 1000, .06); last = now
-      if (!visible || !width || !height) return
-      if (!reduced.matches) time += dt
+      if (!visible || document.hidden || !width || !height) return
+      if(pausedRef.current && rendered && Math.abs(target.current.yaw-yaw)<.001 && Math.abs(target.current.pitch-pitch)<.001)return
+      rendered=true
+      if (!pausedRef.current) time += dt
       const ease = reduced.matches ? 1 : .09
       yaw += (target.current.yaw - yaw) * ease; pitch += (target.current.pitch - pitch) * ease
       const angle = yaw
@@ -130,10 +135,10 @@ export default function HeroScene() {
         for (let i = 0; i <= 60; i++) { const a = i/60*Math.PI*2; face.push(project([Math.sign(Math.cos(a))*Math.pow(Math.abs(Math.cos(a)),.65)*.61,-.28+Math.sign(Math.sin(a))*Math.pow(Math.abs(Math.sin(a)),.65)*.34,.48])) }
         path(face, '#d1a5ffb0', 1.3, '#100c22ee')
         ctx.shadowColor = '#be78ff'; ctx.shadowBlur = 18
-        // Clearly visible slow eyelid closure, first appearing after two seconds.
-        const blinkPhase = time % 5.5
-        const blink = !reduced.matches && blinkPhase > 2 && blinkPhase < 3.6
-          ? Math.max(.015, 1 - 1.15 * Math.sin((blinkPhase - 2) / 1.6 * Math.PI) ** 2)
+        // The parent owns motion preferences and the explicit play/pause override.
+        const blinkPhase = time % 3.8
+        const blink = blinkPhase > .8 && blinkPhase < 1.4
+          ? Math.max(.025, 1 - 1.2 * Math.sin((blinkPhase - .8) / .6 * Math.PI) ** 2)
           : 1
         for (const side of [-1, 1]) {
           const eye = Array.from({length:41},(_,i)=>{ const t=i/40*Math.PI*2; return project([side*.26+Math.cos(t)*.115,-.26+Math.sin(t)*.13*blink,.5]) })
@@ -157,10 +162,10 @@ export default function HeroScene() {
         ctx.fillStyle='#c49aff88'; ctx.beginPath(); ctx.arc(p[0],p[1],i%4? .8:1.6,0,Math.PI*2); ctx.fill()
       }
     }
-    draw()
+    draw(); readyRef.current?.()
     return () => { cancelAnimationFrame(frame); observer.disconnect(); resize.disconnect() }
   }, [])
-  return <div className="volume-scene">
+  return <div className={`volume-scene ${paused?'hologram-paused':''}`}>
     <div className="holo-dashboards" aria-hidden="true">
       <div className="holo-panel holo-code"><div className="holo-panel-title"><i /> SYSTEM / CODE <span>01</span></div><div className="holo-code-lines">{Array.from({length:15},(_,i)=><div key={i} style={{paddingLeft:`${i%4*5}px`}}><b>{String(i+1).padStart(2,'0')}</b><span style={{width:`${25+(i*23)%55}%`}}/><em style={{width:`${10+i%3*6}%`}}/></div>)}</div><div className="holo-panel-footer"><i /> BUILD COMPLETE</div></div>
       <div className="holo-panel holo-analytics"><div className="holo-panel-title"><i /> ANALYTICS <span>02</span></div><div className="holo-metrics"><div className="holo-donut"/><div><span>NEURAL ACTIVITY</span><strong>98.4<small>%</small></strong><i>↑ SYSTEM ONLINE</i></div></div><div className="holo-bars">{[35,60,45,80,65,92,75,100].map((h,i)=><i key={i} style={{height:`${h}%`,animationDelay:`${-i*.4}s`}}/>)}</div></div>

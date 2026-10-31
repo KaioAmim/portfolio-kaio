@@ -1,0 +1,12 @@
+<!doctype html><html lang="pt-BR"><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Verificação de estados</title><div id="root"></div><script type="module">
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import { BootScreen } from '/src/components/Experience.jsx';
+import { AppErrorBoundary, StatusPage } from '/src/components/StatusPage.jsx';
+import '/src/styles.css';
+import '/src/experience.css';
+import '/src/violet.css';
+const mode=new URLSearchParams(location.search).get('mode');
+function Failure(){throw new Error('Falha simulada para verificar recuperação');}
+createRoot(document.getElementById('root')).render(mode==='loading'?React.createElement(BootScreen,{progress:67}):mode==='offline'?React.createElement(StatusPage,{offline:true}):React.createElement(AppErrorBoundary,null,React.createElement(Failure)));
+</script></html>
