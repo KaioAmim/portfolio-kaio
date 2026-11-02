@@ -63,3 +63,14 @@ Limite: a simulação de rede/503 valida o service worker de forma isolada. Não
 - Estudos KA e AFK preservados em design/identidade-ka; a identidade usada no site não foi substituída.
 
 Limites desta sincronização: revisão pontual de foto e filtro de Stacks; não foi refeita a auditoria visual completa nem publicada uma nova versão em produção.
+
+## Logo KA — 31/10/2026
+
+- [x] Originais do usuário preservados; nome do menu exibe as letras do PNG por viewport SVG.
+- [x] Monograma no cabeçalho/rodapé e marca completa no contato; favicon SVG compacto com fundo escuro.
+- [x] Compilação de produção (`npm run build`).
+- [x] Testes de fallback offline: 5/5 (`node --test tests/offline.test.mjs`).
+- [x] Navegador local: cabeçalho, contato e rodapé; celular de 360px, temas claro/escuro e abertura/fechamento do menu.
+- [x] Sem erros de console durante a verificação; marca sem sobreposição no cabeçalho móvel.
+- [x] `git diff --check`.
+- [ ] Validação em Safari/iOS físico (não realizada).
