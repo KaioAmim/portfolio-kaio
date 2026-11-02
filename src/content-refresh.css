@@ -1,0 +1,97 @@
+:root {
+  font-family: "DM Sans", Arial, sans-serif;
+  --display: "Syne", "Arial Narrow", Arial, sans-serif;
+}
+
+body,
+button,
+input,
+textarea,
+select {
+  font-family: "DM Sans", Arial, sans-serif;
+}
+
+/* Keep the brief loading screen visually stable while web fonts download. */
+.intro-word-loader,
+.intro-loader > button {
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.contact-form input:not([type="radio"]),
+.contact-form textarea {
+  font-family: "DM Sans", Arial, sans-serif;
+}
+
+.portrait-art {
+  aspect-ratio: 4 / 5;
+  min-height: 0;
+}
+
+.hero-type-line {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.hero-title.is-typing .hero-type-line-one {
+  animation: hero-type-reveal 1100ms steps(9, end) 160ms both;
+}
+
+.hero-title.is-typing .hero-type-line-two {
+  animation: hero-type-reveal 1400ms steps(10, end) 1380ms both;
+}
+
+.hero-type-caret {
+  display: inline-block;
+  width: 0.52em;
+  height: 0.09em;
+  margin-left: 0.08em;
+  background: var(--purple);
+  opacity: 0;
+  vertical-align: baseline;
+}
+
+.hero-title.is-typing .hero-type-caret {
+  animation: hero-caret 560ms step-end 5 2.82s;
+}
+
+@keyframes hero-type-reveal {
+  from { clip-path: inset(0 100% 0 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+
+@keyframes hero-caret {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+
+.section-heading,
+.contact-workspace .section-heading {
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 18px;
+}
+
+.section-heading-aside,
+.section-description {
+  align-self: flex-start;
+  max-width: 720px;
+}
+
+@media (min-width: 641px) {
+  #projects-title,
+  #timeline-title,
+  #skills-title,
+  .project-process .section-heading h2 {
+    white-space: nowrap;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-title.is-typing .hero-type-line-one,
+  .hero-title.is-typing .hero-type-line-two,
+  .hero-title.is-typing .hero-type-caret {
+    animation: none;
+    clip-path: none;
+  }
+}

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 80" role="img">
+  <title>Monograma KA dentro de um triângulo</title>
+  <path d="M50 4 5 76h90L50 4Z" fill="none" stroke="#893bff" stroke-width="5" stroke-linejoin="miter"/>
+  <path d="M25 27v35M29 44l17-17" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="square"/>
+  <path d="m29 45 17 17" fill="none" stroke="#893bff" stroke-width="6" stroke-linecap="square"/>
+  <path d="m49 62 13-32q2-5 4 0l14 32" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M57 53q8-4 17 0" fill="none" stroke="#893bff" stroke-width="5" stroke-linecap="round"/>
+</svg>
