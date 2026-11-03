@@ -78,6 +78,13 @@ select {
   max-width: 720px;
 }
 
+@media (max-width: 640px) {
+  .hero h1 {
+    font-size: clamp(42px, 12vw, 72px);
+    letter-spacing: -0.04em;
+  }
+}
+
 @media (min-width: 641px) {
   #projects-title,
   #timeline-title,
