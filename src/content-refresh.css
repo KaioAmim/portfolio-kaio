@@ -107,3 +107,8 @@ select {
   }
 }
 @media(max-width:640px){.privacy-layer{inset:auto 10px 10px}.privacy-panel{padding:20px}.privacy-actions{display:grid;grid-template-columns:1fr}.privacy-actions button{width:100%}.legal-links{width:100%;justify-content:center}.site-footer{justify-content:center}.privacy-reopen{left:10px;bottom:10px}}
+
+/* Consent prompt anchors to the lower-left corner. */
+.privacy-layer{right:auto;left:20px;justify-content:flex-start}
+.privacy-close{display:grid;place-items:center;padding:0;line-height:0}
+@media(max-width:640px){.privacy-layer{right:10px;left:10px;justify-content:flex-start}}
