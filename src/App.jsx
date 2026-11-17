@@ -1,10 +1,10 @@
-import { useEffect, useMemo, useCallback, useRef, useState } from 'react';
+import { lazy, Suspense, useEffect, useMemo, useCallback, useRef, useState } from 'react';
 import { ArrowUpRight, ArrowDown, ArrowRight, ArrowUp, Github, Linkedin, Mail, Download, Menu, X, Pause, Play, MapPin, Code2, Database, Terminal, BriefcaseBusiness, GraduationCap, Award, Copy, Check, ExternalLink } from 'lucide-react';
 import { profile, projects, skills, timeline } from './content';
 import Carousel from './components/Carousel';
 import Contact from './components/Contact';
 import Brand from './components/Brand';
-import HeroScene from './components/HeroScene';
+const HeroScene = lazy(() => import('./components/HeroScene'));
 import Process from './components/Process';
 import TransitionPanel from './components/TransitionPanel';
 import Skills from './components/Skills';
@@ -54,11 +54,13 @@ function ProjectDialog({ project, onClose }) {
 export default function App() {
   const shell = useRef(null);
   const [booting, setBooting] = useState(true);
+  const [showHeroScene, setShowHeroScene] = useState(false);
   const [loadProgress,setLoadProgress]=useState(0);
   const completed=useRef(new Set());
   const markLoaded=useCallback(key=>{completed.current.add(key);setLoadProgress(Math.min(100,Math.round(completed.current.size/6*100)));},[]);
   useEffect(()=>{let alive=true;document.fonts.ready.then(()=>{if(alive)markLoaded('fonts');});projects.forEach(project=>{const image=new Image();image.onload=image.onerror=()=>{if(alive)markLoaded(project.id);};image.src=project.cover;});const timeout=setTimeout(()=>{if(alive){['fonts','scene',...projects.map(p=>p.id)].forEach(markLoaded);}},7000);return()=>{alive=false;clearTimeout(timeout);};},[markLoaded]);
   useEffect(()=>{if(loadProgress<100)return;const timer=setTimeout(()=>setBooting(false),1800);return()=>clearTimeout(timer);},[loadProgress]);
+  useEffect(()=>{let idleId;let timer;const start=()=>setShowHeroScene(true);if('requestIdleCallback'in window)idleId=window.requestIdleCallback(start,{timeout:3500});else timer=setTimeout(start,1200);return()=>{if(idleId)window.cancelIdleCallback(idleId);clearTimeout(timer);};},[]);
   const [menuOpen, setMenuOpen] = useState(false);
   const [active, setActive] = useState('inicio');
   const [projectFilter, setProjectFilter] = useState('Todos');
@@ -120,7 +122,7 @@ function learn(data) {
 
 // human ideas, connected systems
 network.connect();`}</pre></div><div className="hero-copy"><div className="hero-intro"><span className="small-line" /> Olá, sou Kaio Amim</div><h1 id="hero-title" className={booting ? 'hero-title' : 'hero-title is-typing'} aria-label="Do front. Aos dados."><span className="hero-type-line hero-type-line-one" aria-hidden="true">Do front<span className="accent">.</span></span><br /><span className="hero-type-line hero-type-line-two" aria-hidden="true">Aos dados<span className="accent">.</span></span><span className="hero-type-caret" aria-hidden="true" /></h1><p className="hero-role">Desenvolvedor de software <span>Full Stack</span></p><p className="hero-description">Desenvolvo aplicações web completas, conectando interfaces, APIs, autenticação e bancos de dados.</p><div className="hero-actions"><a href="#projetos" className="button button-primary">Conhecer projetos <ArrowUpRight size={18} /></a><a href="#sobre" className="text-link">Sobre mim <ArrowRight size={17} /></a></div><div className="hero-socials"><a href={profile.github} {...external} aria-label="GitHub de Kaio Amim"><Github size={19} /></a><a href={profile.linkedin} {...external} aria-label="LinkedIn de Kaio Amim"><Linkedin size={19} /></a><a href={`mailto:${profile.email}`} aria-label="Enviar e-mail a Kaio Amim"><Mail size={19} /></a><span className="social-divider" /><span>Aplicações completas, do fluxo aos dados</span></div></div>
-        <div className="hero-art"><HeroScene paused={isPaused} onReady={()=>markLoaded('scene')}/><button className="motion-button icon-button" onClick={()=>setMotionEnabled(isPaused)} aria-label={isPaused?'Ativar animações automáticas':'Pausar animações automáticas'} aria-pressed={isPaused}>{isPaused?<Play size={15}/>:<Pause size={15}/>}</button></div>
+        <div className="hero-art">{showHeroScene?<Suspense fallback={<div className="scene-skeleton" aria-label="Carregando ilustração 3D"/>}><HeroScene paused={isPaused} onReady={()=>markLoaded('scene')}/></Suspense>:<div className="scene-skeleton" aria-label="Preparando ilustração 3D"/>}<button className="motion-button icon-button" onClick={()=>setMotionEnabled(isPaused)} aria-label={isPaused?'Ativar animações automáticas':'Pausar animações automáticas'} aria-pressed={isPaused}>{isPaused?<Play size={15}/>:<Pause size={15}/>}</button></div>
         <div className="hero-bottom"><span><MapPin size={14} /> Barretos, São Paulo · Brasil</span><a href="#projetos">Explorar projetos <ArrowDown size={15} /></a><span className="hero-bottom-note">Desenvolvedor júnior</span></div>
       </section>
 
