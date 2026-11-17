@@ -1,15 +1,16 @@
-import { useEffect, useMemo, useCallback, useRef, useState } from 'react';
+import { lazy, Suspense, useEffect, useMemo, useCallback, useRef, useState } from 'react';
 import { ArrowUpRight, ArrowDown, ArrowRight, ArrowUp, Github, Linkedin, Mail, Download, Menu, X, Pause, Play, MapPin, Code2, Database, Terminal, BriefcaseBusiness, GraduationCap, Award, Copy, Check, ExternalLink } from 'lucide-react';
 import { profile, projects, skills, timeline } from './content';
 import Carousel from './components/Carousel';
 import Contact from './components/Contact';
 import Brand from './components/Brand';
-import HeroScene from './components/HeroScene';
+const HeroScene = lazy(() => import('./components/HeroScene'));
 import Process from './components/Process';
 import TransitionPanel from './components/TransitionPanel';
 import Skills from './components/Skills';
 import TechIcon, { tagColors } from './components/TechIcon';
 import { BootScreen, CursorGlow, ThemeToggle } from './components/Experience';
+import CookieConsent from './components/CookieConsent';
 const nav = [['inicio', 'Início'], ['projetos', 'Projetos'], ['sobre', 'Sobre mim'], ['contato', 'Contato']];
 const external = { target: '_blank', rel: 'noopener noreferrer' };
 
@@ -53,11 +54,13 @@ function ProjectDialog({ project, onClose }) {
 export default function App() {
   const shell = useRef(null);
   const [booting, setBooting] = useState(true);
+  const [showHeroScene, setShowHeroScene] = useState(false);
   const [loadProgress,setLoadProgress]=useState(0);
   const completed=useRef(new Set());
   const markLoaded=useCallback(key=>{completed.current.add(key);setLoadProgress(Math.min(100,Math.round(completed.current.size/6*100)));},[]);
   useEffect(()=>{let alive=true;document.fonts.ready.then(()=>{if(alive)markLoaded('fonts');});projects.forEach(project=>{const image=new Image();image.onload=image.onerror=()=>{if(alive)markLoaded(project.id);};image.src=project.cover;});const timeout=setTimeout(()=>{if(alive){['fonts','scene',...projects.map(p=>p.id)].forEach(markLoaded);}},7000);return()=>{alive=false;clearTimeout(timeout);};},[markLoaded]);
   useEffect(()=>{if(loadProgress<100)return;const timer=setTimeout(()=>setBooting(false),1800);return()=>clearTimeout(timer);},[loadProgress]);
+  useEffect(()=>{let idleId;let timer;const start=()=>setShowHeroScene(true);if('requestIdleCallback'in window)idleId=window.requestIdleCallback(start,{timeout:3500});else timer=setTimeout(start,1200);return()=>{if(idleId)window.cancelIdleCallback(idleId);clearTimeout(timer);};},[]);
   const [menuOpen, setMenuOpen] = useState(false);
   const [active, setActive] = useState('inicio');
   const [projectFilter, setProjectFilter] = useState('Todos');
@@ -119,7 +122,7 @@ function learn(data) {
 
 // human ideas, connected systems
 network.connect();`}</pre></div><div className="hero-copy"><div className="hero-intro"><span className="small-line" /> Olá, sou Kaio Amim</div><h1 id="hero-title" className={booting ? 'hero-title' : 'hero-title is-typing'} aria-label="Do front. Aos dados."><span className="hero-type-line hero-type-line-one" aria-hidden="true">Do front<span className="accent">.</span></span><br /><span className="hero-type-line hero-type-line-two" aria-hidden="true">Aos dados<span className="accent">.</span></span><span className="hero-type-caret" aria-hidden="true" /></h1><p className="hero-role">Desenvolvedor de software <span>Full Stack</span></p><p className="hero-description">Desenvolvo aplicações web completas, conectando interfaces, APIs, autenticação e bancos de dados.</p><div className="hero-actions"><a href="#projetos" className="button button-primary">Conhecer projetos <ArrowUpRight size={18} /></a><a href="#sobre" className="text-link">Sobre mim <ArrowRight size={17} /></a></div><div className="hero-socials"><a href={profile.github} {...external} aria-label="GitHub de Kaio Amim"><Github size={19} /></a><a href={profile.linkedin} {...external} aria-label="LinkedIn de Kaio Amim"><Linkedin size={19} /></a><a href={`mailto:${profile.email}`} aria-label="Enviar e-mail a Kaio Amim"><Mail size={19} /></a><span className="social-divider" /><span>Aplicações completas, do fluxo aos dados</span></div></div>
-        <div className="hero-art"><HeroScene paused={isPaused} onReady={()=>markLoaded('scene')}/><button className="motion-button icon-button" onClick={()=>setMotionEnabled(isPaused)} aria-label={isPaused?'Ativar animações automáticas':'Pausar animações automáticas'} aria-pressed={isPaused}>{isPaused?<Play size={15}/>:<Pause size={15}/>}</button></div>
+        <div className="hero-art">{showHeroScene?<Suspense fallback={<div className="scene-skeleton" aria-label="Carregando ilustração 3D"/>}><HeroScene paused={isPaused} onReady={()=>markLoaded('scene')}/></Suspense>:<div className="scene-skeleton" aria-label="Preparando ilustração 3D"/>}<button className="motion-button icon-button" onClick={()=>setMotionEnabled(isPaused)} aria-label={isPaused?'Ativar animações automáticas':'Pausar animações automáticas'} aria-pressed={isPaused}>{isPaused?<Play size={15}/>:<Pause size={15}/>}</button></div>
         <div className="hero-bottom"><span><MapPin size={14} /> Barretos, São Paulo · Brasil</span><a href="#projetos">Explorar projetos <ArrowDown size={15} /></a><span className="hero-bottom-note">Desenvolvedor júnior</span></div>
       </section>
 
@@ -127,6 +130,6 @@ network.connect();`}</pre></div><div className="hero-copy"><div className="hero-
       <section className="about-section section" id="sobre" aria-labelledby="about-title"><div className="container about-grid"><div className="about-art portrait-art"><img className="about-portrait" src="/kaio-portrait.png" alt="Kaio Amim, de camisa preta e braços cruzados" width="1024" height="1536" loading="lazy" /><span className="monogram-caption">Barretos, São Paulo</span></div><div className="about-copy"><p className="section-kicker"><span /> Sobre mim</p><h2 id="about-title">Prazer, sou o<br />Kaio Amim.</h2><p>Sou desenvolvedor de software em formação, com foco em <strong>backend e aplicações web</strong>. Minha experiência com suporte e infraestrutura de TI me ensinou a investigar problemas reais antes de pensar na solução.</p><p>Curso Sistemas de Informação e desenvolvo projetos com PHP, JavaScript, Node.js, React e MySQL. Gosto de transformar necessidades em interfaces claras, APIs bem integradas e dados organizados.</p><p className="about-goal">Procuro uma oportunidade como desenvolvedor júnior para contribuir com o time, aprofundar conhecimentos e crescer construindo produtos reais.</p><a className="button button-outline cv-button" href={profile.resumeUrl} download="Curriculo-Kaio-Amim.pdf">Baixar currículo <Download size={17} /></a><span className="cv-note">PDF · Formação, experiência e cursos</span></div></div>
       <div className="timeline-section container section" id="trajetoria" aria-labelledby="timeline-title"><div className="section-heading"><div><p className="section-kicker"><span /> Minha trajetória</p><h2 id="timeline-title">Formação & experiência<span className="accent">.</span></h2></div><p className="section-description">Formação técnica, graduação em andamento e experiência prática. Desenvolvimento, suporte a usuários e infraestrutura de TI.</p></div><div className="timeline-layout"><div className="timeline-sidebar"><div className="timeline-filters" role="group" aria-label="Filtrar trajetória">{[['all', 'Tudo', ArrowRight], ['work', 'Experiência', BriefcaseBusiness], ['education', 'Formação', GraduationCap], ['course', 'Cursos', Award]].map(([id, label, Icon]) => <button key={id} aria-pressed={timelineFilter === id} onClick={() => {setTimelineFilter(id);setTimelineExpanded(false)}}><Icon size={17} />{label}</button>)}</div></div><TransitionPanel changeKey={`${timelineFilter}-${timelineExpanded}`}><div className="timeline-list" aria-live="polite">{visibleTimeline.map((item, index) => { const Icon = { work: BriefcaseBusiness, education: GraduationCap, course: Award }[item.type]; return <article key={item.title} className="timeline-item" style={{'--item-delay': `${index * 65}ms`}}><div className={`timeline-icon ${item.current ? 'current' : ''}`}><Icon size={17} /></div><div className="timeline-date">{item.period}{item.current && <span>{item.type === 'work' ? 'Atualmente' : 'Em andamento'}</span>}</div><h3>{item.title}</h3><span className="timeline-org">{item.organization}</span><p>{item.description}</p></article>; })}</div></TransitionPanel></div>{filteredTimeline.length > 4 && <button className="timeline-more button button-outline" onClick={() => setTimelineExpanded(value => !value)}>{timelineExpanded ? 'Mostrar menos' : `Mostrar mais (${filteredTimeline.length - 4})`}<ArrowDown size={16} className={timelineExpanded ? 'is-open' : ''}/></button>}</div></section>
       <Skills reduced={isPaused}/><Process/><Contact/>
-    </main><footer className="container site-footer"><Brand /><span>© {new Date().getFullYear()} Kaio Amim. Backend & Web.</span><a href="#inicio" className="back-top">Voltar ao topo <ArrowUp size={16} /></a></footer><ProjectDialog project={selectedProject} onClose={() => setSelectedProject(null)} /></div>
+    </main><footer className="container site-footer"><Brand /><span>© {new Date().getFullYear()} Kaio Amim. Backend & Web.</span><nav className="legal-links" aria-label="Políticas"><a href="/politica-de-privacidade.html">Política de Privacidade</a><a href="/politica-de-cookies.html">Política de Cookies</a></nav><a href="#inicio" className="back-top">Voltar ao topo <ArrowUp size={16} /></a></footer><ProjectDialog project={selectedProject} onClose={() => setSelectedProject(null)} /></div><CookieConsent />
   </>;
 }
