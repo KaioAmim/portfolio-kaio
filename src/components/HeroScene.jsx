@@ -42,9 +42,56 @@ export default function HeroScene({ paused = false, onReady, errorMode = false, 
   useEffect(() => {
     const canvas = canvasRef.current,
       ctx = canvas.getContext('2d');
-    const logo = new Image();
-    logo.onload = () => wakeFrameRef.current?.();
-    logo.src = '/brand/logo-ka-symbol.svg';
+    let hologramLogo = null;
+    if (!errorMode) {
+      const logo = new Image();
+      logo.onload = () => {
+        const width = logo.naturalWidth;
+        const height = logo.naturalHeight;
+        const hologram = document.createElement('canvas');
+        hologram.width = width;
+        hologram.height = height;
+        const hologramCtx = hologram.getContext('2d');
+        hologramCtx.drawImage(logo, 0, 0, width, height);
+        hologramCtx.globalCompositeOperation = 'destination-in';
+        hologramCtx.strokeStyle = '#fff';
+        hologramCtx.lineCap = 'round';
+        hologramCtx.lineJoin = 'round';
+        // Keep only the K and A strokes; the source logo's triangle stays out.
+        hologramCtx.fillRect(270, 352, 38, 250);
+        hologramCtx.lineWidth = 42;
+        hologramCtx.beginPath();
+        hologramCtx.moveTo(326, 466);
+        hologramCtx.lineTo(462, 352);
+        hologramCtx.stroke();
+        hologramCtx.lineWidth = 48;
+        hologramCtx.beginPath();
+        hologramCtx.moveTo(340, 466);
+        hologramCtx.lineTo(481, 602);
+        hologramCtx.stroke();
+        hologramCtx.lineWidth = 42;
+        hologramCtx.beginPath();
+        hologramCtx.moveTo(475, 551);
+        hologramCtx.lineTo(600, 362);
+        hologramCtx.lineTo(728, 580);
+        hologramCtx.stroke();
+        hologramCtx.lineWidth = 25;
+        hologramCtx.beginPath();
+        hologramCtx.moveTo(521, 526);
+        hologramCtx.quadraticCurveTo(590, 500, 663, 526);
+        hologramCtx.stroke();
+        hologramCtx.globalCompositeOperation = 'source-in';
+        const tint = hologramCtx.createLinearGradient(0, 350, 0, 610);
+        tint.addColorStop(0, '#f7eaff');
+        tint.addColorStop(0.52, '#c58eff');
+        tint.addColorStop(1, '#8947ff');
+        hologramCtx.fillStyle = tint;
+        hologramCtx.fillRect(0, 0, width, height);
+        hologramLogo = hologram;
+        wakeFrameRef.current?.();
+      };
+      logo.src = '/brand/logo-ka-symbol.svg';
+    }
     const reduced = matchMedia('(prefers-reduced-motion: reduce)');
     const lowPowerDevice =
       matchMedia('(max-width: 600px)').matches ||
@@ -201,13 +248,13 @@ export default function HeroScene({ paused = false, onReady, errorMode = false, 
         ctx.stroke();
       }
       if (!errorMode) {
-        // Draw the exact KA monogram from the site's brand asset, projected with the robot.
-        if (logo.complete && logo.naturalWidth) {
-          const topLeft = project([-0.4, -1.62, 0.27]);
-          const topRight = project([0.4, -1.62, 0.27]);
-          const bottomLeft = project([-0.4, -1.02, 0.27]);
-          const logoWidth = logo.naturalWidth;
-          const logoHeight = logo.naturalHeight;
+        // Project the isolated KA monogram as a violet hologram above the robot's head.
+        if (hologramLogo) {
+          const logoWidth = hologramLogo.width;
+          const logoHeight = hologramLogo.height;
+          const topLeft = project([-0.7725, -1.822, 0.27]);
+          const topRight = project([0.7275, -1.822, 0.27]);
+          const bottomLeft = project([-0.7725, -0.622, 0.27]);
           ctx.save();
           ctx.transform(
             (topRight[0] - topLeft[0]) / logoWidth,
@@ -217,10 +264,20 @@ export default function HeroScene({ paused = false, onReady, errorMode = false, 
             topLeft[0],
             topLeft[1],
           );
-          ctx.globalAlpha = 0.9;
+          ctx.globalAlpha = 0.32;
+          ctx.globalCompositeOperation = 'screen';
+          ctx.filter = 'hue-rotate(48deg) saturate(1.5)';
+          ctx.drawImage(hologramLogo, 5, 0);
+          ctx.filter = 'none';
+          ctx.globalCompositeOperation = 'source-over';
+          ctx.globalAlpha = 0.88;
           ctx.shadowColor = '#a662ff';
-          ctx.shadowBlur = 10;
-          ctx.drawImage(logo, 0, 0);
+          ctx.shadowBlur = 18;
+          ctx.drawImage(hologramLogo, 0, 0);
+          ctx.globalCompositeOperation = 'source-atop';
+          ctx.globalAlpha = 0.2;
+          ctx.fillStyle = '#f3e5ff';
+          for (let y = 8; y < logoHeight; y += 25) ctx.fillRect(0, y, logoWidth, 2);
           ctx.restore();
         }
       }
