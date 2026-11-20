@@ -42,6 +42,9 @@ export default function HeroScene({ paused = false, onReady, errorMode = false, 
   useEffect(() => {
     const canvas = canvasRef.current,
       ctx = canvas.getContext('2d');
+    const logo = new Image();
+    logo.onload = () => wakeFrameRef.current?.();
+    logo.src = '/brand/logo-ka-symbol.svg';
     const reduced = matchMedia('(prefers-reduced-motion: reduce)');
     const lowPowerDevice =
       matchMedia('(max-width: 600px)').matches ||
@@ -198,63 +201,28 @@ export default function HeroScene({ paused = false, onReady, errorMode = false, 
         ctx.stroke();
       }
       if (!errorMode) {
-        // Extruded polygonal K: front, rear and side faces, with dimensional lighting.
-        const outline = [
-          [-0.23, -1.62],
-          [-0.08, -1.62],
-          [-0.08, -1.42],
-          [0.09, -1.62],
-          [0.28, -1.62],
-          [0.03, -1.34],
-          [0.29, -1.04],
-          [0.09, -1.04],
-          [-0.08, -1.25],
-          [-0.08, -1.04],
-          [-0.23, -1.04],
-        ];
-        const front = outline.map(([a, b]) => project([a, b, 0.27]));
-        const rear = outline.map(([a, b]) => project([a, b, -0.2]));
-        const faces = [{ points: rear, fill: '#3e1e6bdd', stroke: '#a36ae5' }];
-        for (let i = 0; i < outline.length; i++) {
-          const j = (i + 1) % outline.length;
-          const points = [rear[i], rear[j], front[j], front[i]];
-          faces.push({
-            points,
-            fill: i % 3 === 0 ? '#a978eac9' : '#6435a5d9',
-            stroke: '#bc8afc',
-          });
+        // Draw the exact KA monogram from the site's brand asset, projected with the robot.
+        if (logo.complete && logo.naturalWidth) {
+          const topLeft = project([-0.4, -1.62, 0.27]);
+          const topRight = project([0.4, -1.62, 0.27]);
+          const bottomLeft = project([-0.4, -1.02, 0.27]);
+          const logoWidth = logo.naturalWidth;
+          const logoHeight = logo.naturalHeight;
+          ctx.save();
+          ctx.transform(
+            (topRight[0] - topLeft[0]) / logoWidth,
+            (topRight[1] - topLeft[1]) / logoWidth,
+            (bottomLeft[0] - topLeft[0]) / logoHeight,
+            (bottomLeft[1] - topLeft[1]) / logoHeight,
+            topLeft[0],
+            topLeft[1],
+          );
+          ctx.globalAlpha = 0.9;
+          ctx.shadowColor = '#a662ff';
+          ctx.shadowBlur = 10;
+          ctx.drawImage(logo, 0, 0);
+          ctx.restore();
         }
-        faces.push({ points: front, fill: '#9455f54d', stroke: '#f0d9ff' });
-        faces.sort(
-          (a, b) =>
-            a.points.reduce((s, p) => s + p[2], 0) / a.points.length -
-            b.points.reduce((s, p) => s + p[2], 0) / b.points.length,
-        );
-        ctx.shadowColor = '#a662ff';
-        ctx.shadowBlur = 9;
-        faces.forEach((face) => path(face.points, face.stroke, 0.8, face.fill));
-        // Scanlines clipped to the broad front face keep the solid K holographic.
-        ctx.save();
-        ctx.beginPath();
-        front.forEach((p, i) => (i ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1])));
-        ctx.closePath();
-        ctx.clip();
-        for (let j = 0; j < 18; j++) {
-          const h = -1.62 + j * 0.034;
-          path([project([-0.25, h, 0.272]), project([0.3, h, 0.272])], '#dcbaff85', 0.6);
-        }
-        ctx.restore();
-        ctx.shadowBlur = 0;
-        const base = Array.from({ length: 41 }, (_, i) =>
-          project([
-            Math.cos((i / 40) * Math.PI * 2) * 0.3,
-            -0.98,
-            Math.sin((i / 40) * Math.PI * 2) * 0.19,
-          ]),
-        );
-        path(base, '#b67aff65', 0.7);
-        path([project([-0.13, -0.87, 0]), project([-0.22, -1.02, 0])], '#ad68ff30');
-        path([project([0.13, -0.87, 0]), project([0.22, -1.02, 0])], '#ad68ff30');
       }
       const polys = [];
       for (const mesh of meshes) {

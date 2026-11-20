@@ -175,24 +175,15 @@ export default function App() {
   const completed = useRef(new Set());
   const markLoaded = useCallback((key) => {
     completed.current.add(key);
-    setLoadProgress(Math.min(100, Math.round((completed.current.size / 6) * 100)));
+    setLoadProgress(Math.min(100, Math.round((completed.current.size / 2) * 100)));
   }, []);
   useEffect(() => {
     let alive = true;
     document.fonts.ready.then(() => {
       if (alive) markLoaded('fonts');
     });
-    projects.forEach((project) => {
-      const image = new Image();
-      image.onload = image.onerror = () => {
-        if (alive) markLoaded(project.id);
-      };
-      image.src = project.cover;
-    });
     const timeout = setTimeout(() => {
-      if (alive) {
-        ['fonts', 'scene', ...projects.map((p) => p.id)].forEach(markLoaded);
-      }
+      if (alive) ['fonts', 'scene'].forEach(markLoaded);
     }, 7000);
     return () => {
       alive = false;
