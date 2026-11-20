@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#111016" />
+    <script>
+      try {
+        document.documentElement.dataset.theme = localStorage.getItem('kaio-theme') || 'dark';
+      } catch {
+        document.documentElement.dataset.theme = 'dark';
+      }
+    </script>
+    <title>Erro temporário | Kaio Amim</title>
+    <link rel="icon" type="image/svg+xml" href="/brand/logo-ka-symbol.svg" />
+    <link rel="stylesheet" href="/error.css" />
+  </head>
+  <body data-error-code="500">
+    <main class="error-screen">
+      <a class="error-brand" href="/" aria-label="Kaio Amim, início">
+        <img class="error-brand-symbol" src="/brand/logo-ka-symbol.svg" alt="" />
+        <span>Kaio Amim</span>
+      </a>
+      <section class="error-copy" aria-labelledby="error-title">
+        <h1 id="error-title">
+          <span class="error-title-code">ERRO 500</span>
+          <span class="error-title-message">O portfólio precisa de um instante.</span>
+        </h1>
+        <p class="error-description">
+          O servidor encontrou um problema ao atender esta página. Tente novamente em alguns
+          instantes.
+        </p>
+        <div class="error-actions">
+          <a class="error-button error-button-primary" href="/">Voltar ao início</a>
+        </div>
+      </section>
+      <div class="error-visual">
+        <div id="error-robot-root"></div>
+        <div
+          class="error-terminal"
+          role="img"
+          aria-label="Diagnóstico da falha: servidor indisponível"
+        >
+          <div class="error-terminal-header">
+            <span>KAIO / PORTFÓLIO</span>
+            <span class="terminal-status">FALHA TEMPORÁRIA</span>
+          </div>
+          <div class="error-terminal-body" aria-hidden="true">
+            <p><span class="terminal-muted">~/portfolio</span> <b>$</b> verificar-servidor</p>
+            <p>
+              <span class="terminal-key">status</span>
+              <span class="terminal-error">indisponível</span>
+            </p>
+            <p><span class="terminal-key">ação</span> tente novamente em instantes</p>
+            <p class="terminal-cursor">recuperação pendente<span>_</span></p>
+          </div>
+        </div>
+      </div>
+      <div class="error-request">
+        <span>ID da solicitação: <code>::vercel:REQUEST_ID::</code></span>
+        <span>Código: <code>::vercel:ERROR_CODE::</code></span>
+      </div>
+    </main>
+    <script type="module" src="/src/error-robot-entry.jsx"></script>
+  </body>
+</html>

@@ -1,16 +1,18 @@
-# Direção visual — workspace magenta
+# Direção visual
 
-O foco é o trabalho de Kaio: um notebook 3D com um editor ativo, conectado a uma rede holográfica de pontos. A composição deriva das referências de TI e rede fornecidas; texto e hierarquia permanecem limpos.
+O portfólio combina uma apresentação escura, tipografia expressiva e uma cena 3D ligada a desenvolvimento de software. A hierarquia prioriza projetos, trajetória e contato; as seções mantêm textos curtos e legíveis.
 
-## Tokens
+## Identidade visual
 
-- Fundo carvão: #121014; claro: #f8f5f8.
-- Superfície: #1c1820; clara: #fffaff.
-- Texto: #f5f0f5; claro: #281d2c.
-- Texto secundário: #b1a3b4; claro: #6c5a70.
-- Magenta: #ed68cc; claro: #ab1d77.
-- Tipografia: Outfit nos títulos, Manrope no corpo.
+- Fundo escuro: `#111016`; fundo claro: `#f7f9fd`.
+- Superfície escura: `#1b1825`; superfície clara: `#ffffff`.
+- Texto escuro: `#f3f0fa`; texto claro: `#17243a`.
+- Texto secundário escuro: `#ada5bc`; texto secundário claro: `#5d6d83`.
+- Violeta: `#a58bff`; violeta no tema claro: `#2f6fc4`.
+- Títulos: Syne. Corpo e controles: DM Sans.
 
-O magenta identifica ações e tecnologias no letreiro. Tags de projetos preservam as famílias de cores de JavaScript, CSS, HTML, PHP e MySQL. O carrossel mantém o toque nativo; a trajetória alterna os cartões em torno de uma linha central no desktop e passa para uma coluna no celular.
+As cores dos projetos preservam as referências das tecnologias. As telas de erro usam vermelho nos painéis de diagnóstico e no robô. A trajetória usa uma linha do tempo no desktop e uma coluna no celular. Os controles permitem pausar movimentos automáticos; a preferência de movimento reduzido do sistema é respeitada.
 
-Animação contínua limitada à cena e ao letreiro, com controles de pausa. A troca de filtros e de tema responde à ação da pessoa com profundidade 3D. Movimento reduzido tem prioridade por padrão, com ativação explícita disponível. Os textos descrevem stack, projetos, formação e interesse profissional, sem slogans vagos.
+## Estilos
+
+Os estilos principais do site ficam em `src/styles.css`, organizados por seções em comentários. As páginas de erro e as políticas têm folhas de estilo próprias em `public/`. O projeto usa Prettier para manter os arquivos legíveis.

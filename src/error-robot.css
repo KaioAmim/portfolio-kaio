@@ -1,0 +1,248 @@
+#error-robot-root {
+  position: relative;
+  width: 100%;
+  height: 460px;
+  max-width: 460px;
+  justify-self: center;
+}
+
+#error-robot-root .volume-scene {
+  position: relative;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+#error-robot-root .holo-dashboards {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  display: block !important;
+  pointer-events: none;
+  perspective: 900px;
+}
+
+#error-robot-root .holo-panel {
+  position: absolute;
+  width: 26%;
+  padding: 10px;
+  border: 1px solid #ff809766;
+  border-radius: 5px;
+  background: linear-gradient(125deg, #ff80991c, #1d102aeb);
+  color: #f0c5ce;
+  box-shadow:
+    0 0 24px #ff526616,
+    inset 0 0 18px #ff52660b;
+  backdrop-filter: blur(4px);
+  animation: error-panel-float 6s ease-in-out infinite;
+}
+
+#error-robot-root .holo-code {
+  top: 29%;
+  left: 0;
+  --panel-angle: 13deg;
+}
+
+#error-robot-root .holo-analytics {
+  top: 23%;
+  right: 0;
+  animation-delay: -2s;
+  --panel-angle: -15deg;
+}
+
+#error-robot-root .holo-signal {
+  top: 57%;
+  right: 0;
+  animation-delay: -4s;
+  --panel-angle: -12deg;
+}
+
+#error-robot-root .holo-panel-title {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding-bottom: 7px;
+  border-bottom: 1px solid #ff809944;
+  font:
+    6px 'Space Mono',
+    Consolas,
+    monospace;
+  letter-spacing: 0.04em;
+}
+
+#error-robot-root .holo-panel-title > i,
+#error-robot-root .holo-panel-footer > i {
+  width: 5px;
+  height: 5px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: #ff91a5;
+  box-shadow: 0 0 7px #ff5266;
+}
+
+#error-robot-root .holo-panel-title > span,
+#error-robot-root .holo-panel-footer > span {
+  margin-left: auto;
+  opacity: 0.7;
+}
+
+#error-robot-root .holo-code-lines {
+  padding: 9px 0;
+}
+
+#error-robot-root .holo-code-lines > div {
+  display: flex;
+  height: 7px;
+  align-items: center;
+  gap: 4px;
+}
+
+#error-robot-root .holo-code-lines b {
+  width: 9px;
+  color: #ff9aaa;
+  font:
+    4px Consolas,
+    monospace;
+}
+
+#error-robot-root .holo-code-lines span,
+#error-robot-root .holo-code-lines em {
+  display: block;
+  height: 2px;
+  background: #ff8fa2;
+  box-shadow: 0 0 4px #ff526655;
+}
+
+#error-robot-root .holo-code-lines em {
+  background: #ffc1a0;
+  opacity: 0.65;
+}
+
+#error-robot-root .holo-panel-footer {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding-top: 7px;
+  border-top: 1px solid #ff809944;
+  font:
+    5px 'Space Mono',
+    Consolas,
+    monospace;
+}
+
+#error-robot-root .holo-error-state {
+  display: grid;
+  gap: 2px;
+  margin: 13px 0;
+  color: #ffb1bd;
+  font-family: 'DM Sans', Arial, sans-serif;
+}
+
+#error-robot-root .holo-error-state > span {
+  color: #e1b8c1;
+  font-size: 6px;
+  letter-spacing: 0.08em;
+}
+
+#error-robot-root .holo-error-state > strong {
+  font-size: 18px;
+  line-height: 1.1;
+}
+
+#error-robot-root .holo-error-state > i {
+  color: #ff9aaa;
+  font-size: 5px;
+  font-style: normal;
+  letter-spacing: 0.05em;
+}
+
+#error-robot-root .holo-bars {
+  display: flex;
+  height: 38px;
+  align-items: flex-end;
+  gap: 5px;
+  border-bottom: 1px solid #ff809977;
+  background: repeating-linear-gradient(0deg, transparent 0 11px, #ff809914 11px 12px);
+}
+
+#error-robot-root .holo-bars > i {
+  flex: 1;
+  border-top: 1px solid #ffd4db;
+  background: linear-gradient(#ff9aaa99, #ff526622);
+  transform-origin: bottom;
+  animation: error-bar-pulse 4s ease-in-out infinite;
+}
+
+#error-robot-root .holo-signal > svg {
+  display: block;
+  width: 100%;
+  margin: 9px 0;
+  background: repeating-linear-gradient(0deg, transparent 0 13px, #ff809914 13px 14px);
+}
+
+#error-robot-root .holo-connections {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  fill: #ff9aaa;
+  stroke: #ff809966;
+  stroke-width: 0.6;
+}
+
+#error-robot-root .holo-connections path {
+  fill: none;
+  stroke-dasharray: 3 5;
+}
+
+#error-robot-root .holo-connections circle {
+  display: none;
+}
+
+#error-robot-root .robot-views {
+  display: none !important;
+}
+
+#error-robot-root .robot-volume {
+  display: block;
+  width: 100%;
+  height: 100%;
+  filter: hue-rotate(82deg) saturate(1.15);
+  pointer-events: none;
+}
+
+@keyframes error-panel-float {
+  0%,
+  100% {
+    transform: rotateY(var(--panel-angle, 0deg)) translateY(0);
+  }
+  50% {
+    transform: rotateY(var(--panel-angle, 0deg)) translateY(-8px);
+  }
+}
+
+@keyframes error-bar-pulse {
+  50% {
+    transform: scaleY(0.72);
+    opacity: 0.65;
+  }
+}
+
+:root[data-theme='light'] #error-robot-root .robot-volume {
+  filter: hue-rotate(82deg) saturate(1.15);
+}
+
+@media (max-width: 600px) {
+  #error-robot-root {
+    width: 100%;
+    max-width: none;
+    height: 390px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #error-robot-root .holo-panel,
+  #error-robot-root .holo-bars > i {
+    animation: none;
+  }
+}

@@ -1,14 +1,129 @@
-import {useState} from 'react';
-import {Compass,Layers,Code2,Rocket,ArrowRight,Check} from 'lucide-react';
+import { useState } from 'react';
+import { Compass, Layers, Code2, Rocket, ArrowRight, Check } from 'lucide-react';
 import TransitionPanel from './TransitionPanel';
 import ServiceVisual from './ServiceVisual';
-const stages=[
- {label:'Entender',progress:25,icon:Compass,title:'Primeiro, entendo o problema.',text:'Conversamos sobre o objetivo, as pessoas que usarão o produto e o que precisa funcionar primeiro. A partir disso, organizo um escopo claro.',tags:['Contexto','Objetivos','Prioridades'],output:'Um plano claro para orientar o projeto.'},
- {label:'Desenhar',progress:50,icon:Layers,title:'Depois, organizo a experiência.',text:'Estruturo telas, caminhos e informações. O protótipo permite validar a experiência antes de iniciar o desenvolvimento.',tags:['Fluxos','Interface','Protótipo'],output:'Uma experiência organizada e validada.'},
- {label:'Desenvolver',progress:75,icon:Code2,title:'Transformo o plano em produto.',text:'Desenvolvo as interfaces, conecto APIs e estruturo os dados. Também testo as funções e ajusto a experiência para celular e computador.',tags:['Frontend & backend','Integrações','Testes'],output:'Uma aplicação funcional e pronta para testes.'},
- {label:'Entregar',progress:100,icon:Rocket,title:'Publico e preparo a evolução.',text:'Reviso os detalhes, preparo a publicação e documento o necessário para uso e continuidade. O feedback orienta os ajustes finais.',tags:['Publicação','Documentação','Feedback'],output:'Um projeto publicado e preparado para evoluir.'}
+const stages = [
+  {
+    label: 'Entender',
+    progress: 25,
+    icon: Compass,
+    title: 'Primeiro, entendo o problema.',
+    text: 'Conversamos sobre o objetivo, as pessoas que usarão o produto e o que precisa funcionar primeiro. A partir disso, organizo um escopo claro.',
+    tags: ['Contexto', 'Objetivos', 'Prioridades'],
+    output: 'Um plano claro para orientar o projeto.',
+  },
+  {
+    label: 'Desenhar',
+    progress: 50,
+    icon: Layers,
+    title: 'Depois, organizo a experiência.',
+    text: 'Estruturo telas, caminhos e informações. O protótipo permite validar a experiência antes de iniciar o desenvolvimento.',
+    tags: ['Fluxos', 'Interface', 'Protótipo'],
+    output: 'Uma experiência organizada e validada.',
+  },
+  {
+    label: 'Desenvolver',
+    progress: 75,
+    icon: Code2,
+    title: 'Transformo o plano em produto.',
+    text: 'Desenvolvo as interfaces, conecto APIs e estruturo os dados. Também testo as funções e ajusto a experiência para celular e computador.',
+    tags: ['Frontend & backend', 'Integrações', 'Testes'],
+    output: 'Uma aplicação funcional e pronta para testes.',
+  },
+  {
+    label: 'Entregar',
+    progress: 100,
+    icon: Rocket,
+    title: 'Publico e preparo a evolução.',
+    text: 'Reviso os detalhes, preparo a publicação e documento o necessário para uso e continuidade. O feedback orienta os ajustes finais.',
+    tags: ['Publicação', 'Documentação', 'Feedback'],
+    output: 'Um projeto publicado e preparado para evoluir.',
+  },
 ];
-export default function Process(){
- const [active,setActive]=useState(0);const stage=stages[active],Icon=stage.icon;
- return <section id="processo" className="project-process section"><div className="container"><div className="section-heading"><div><p className="section-kicker"><span/>Como eu desenvolvo</p><h2>Do problema ao produto<span className="accent">.</span></h2></div><p className="section-description">Um processo organizado, colaborativo e transparente. Explore as etapas do planejamento à publicação.</p></div><div className="process-meter-heading"><span>ETAPA 0{active+1} / 04</span><strong>{stage.progress}<small>%</small></strong></div><div className="process-meter" role="progressbar" aria-label="Etapa ilustrativa do projeto" aria-valuemin={0} aria-valuemax={100} aria-valuenow={stage.progress}><i style={{width:stage.progress+'%'}}/></div><div className="process-steps" style={{'--process-complete':`${active/3*100}%`}} role="group" aria-label="Etapas do projeto">{stages.map((item,i)=>{const StepIcon=i<active?Check:item.icon;return <button key={item.label} onClick={()=>setActive(i)} aria-pressed={active===i}><span><StepIcon size={21}/></span><small>0{i+1}</small>{item.label}</button>})}</div><TransitionPanel changeKey={active}><div className="process-content"><ServiceVisual step={active}/><div><p className="section-kicker">{stage.label}</p><h3>{stage.title}</h3><p>{stage.text}</p><div className="process-deliverables">{stage.tags.map(tag=><span key={tag}>{tag}</span>)}</div><p className="process-output"><Check size={16}/>{stage.output}</p><button className="button button-outline" onClick={()=>setActive((active+1)%4)}>{active===3?'Rever processo':'Próxima etapa'}<ArrowRight size={16}/></button></div></div></TransitionPanel><p className="process-note">Os percentuais representam apenas as etapas do processo, não o prazo de um projeto.</p></div></section>;
+export default function Process() {
+  const [active, setActive] = useState(0);
+  const stage = stages[active];
+  return (
+    <section id="processo" className="project-process section">
+      <div className="container">
+        <div className="section-heading">
+          <div>
+            <p className="section-kicker">
+              <span />
+              Metodologia
+            </p>
+            <h2>
+              Do problema ao produto<span className="accent">.</span>
+            </h2>
+          </div>
+          <p className="section-description">
+            Um processo organizado, colaborativo e transparente. Explore as etapas do planejamento à
+            publicação.
+          </p>
+        </div>
+        <div className="process-meter-heading">
+          <span>ETAPA 0{active + 1} / 04</span>
+          <strong>
+            {stage.progress}
+            <small>%</small>
+          </strong>
+        </div>
+        <div
+          className="process-meter"
+          role="progressbar"
+          aria-label="Etapa ilustrativa do projeto"
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-valuenow={stage.progress}
+        >
+          <i style={{ width: stage.progress + '%' }} />
+        </div>
+        <div
+          className="process-steps"
+          style={{ '--process-complete': `${(active / 3) * 100}%` }}
+          role="group"
+          aria-label="Etapas do projeto"
+        >
+          {stages.map((item, i) => {
+            const StepIcon = i < active ? Check : item.icon;
+            return (
+              <button key={item.label} onClick={() => setActive(i)} aria-pressed={active === i}>
+                <span>
+                  <StepIcon size={21} />
+                </span>
+                <small>0{i + 1}</small>
+                {item.label}
+              </button>
+            );
+          })}
+        </div>
+        <TransitionPanel changeKey={active}>
+          <div className="process-content">
+            <ServiceVisual step={active} />
+            <div>
+              <p className="section-kicker">{stage.label}</p>
+              <h3>{stage.title}</h3>
+              <p>{stage.text}</p>
+              <div className="process-deliverables">
+                {stage.tags.map((tag) => (
+                  <span key={tag}>{tag}</span>
+                ))}
+              </div>
+              <p className="process-output">
+                <Check size={16} />
+                {stage.output}
+              </p>
+              <button className="button button-outline" onClick={() => setActive((active + 1) % 4)}>
+                {active === 3 ? 'Rever processo' : 'Próxima etapa'}
+                <ArrowRight size={16} />
+              </button>
+            </div>
+          </div>
+        </TransitionPanel>
+        <p className="process-note">
+          Os percentuais representam apenas as etapas do processo, não o prazo de um projeto.
+        </p>
+      </div>
+    </section>
+  );
 }

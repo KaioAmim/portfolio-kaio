@@ -3,8 +3,19 @@ dist/
 .sites-runtime/
 .DS_Store
 *.local
+.env
+.env.*
+!.env.example
 
 *.log
 .openai/
 .obsidian/
 .smart-env/
+
+# Local agent tools and temporary work
+.agents/
+skills-lock.json
+tmp/
+
+# Identity studies and source artwork, not deployed with the site
+design/

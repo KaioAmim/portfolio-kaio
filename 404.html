@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#111016" />
+    <script>
+      try {
+        document.documentElement.dataset.theme = localStorage.getItem('kaio-theme') || 'dark';
+      } catch {
+        document.documentElement.dataset.theme = 'dark';
+      }
+    </script>
+    <title>Página não encontrada | Kaio Amim</title>
+    <link rel="icon" type="image/svg+xml" href="/brand/logo-ka-symbol.svg" />
+    <link rel="stylesheet" href="/error.css" />
+  </head>
+  <body data-error-code="404">
+    <main class="error-screen">
+      <a class="error-brand" href="/" aria-label="Kaio Amim, início">
+        <img class="error-brand-symbol" src="/brand/logo-ka-symbol.svg" alt="" />
+        <span>Kaio Amim</span>
+      </a>
+      <section class="error-copy" aria-labelledby="error-title">
+        <h1 id="error-title">
+          <span class="error-title-code">ERRO 404</span>
+          <span class="error-title-message">Este caminho não leva a uma página.</span>
+        </h1>
+        <p class="error-description">
+          O endereço pode ter mudado ou estar incompleto. Volte ao portfólio e continue por lá.
+        </p>
+        <div class="error-actions">
+          <a class="error-button error-button-primary" href="/">
+            Voltar ao início <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </section>
+      <div class="error-visual">
+        <div id="error-robot-root"></div>
+        <div
+          class="error-terminal"
+          role="img"
+          aria-label="Diagnóstico do endereço: página não encontrada"
+        >
+          <div class="error-terminal-header">
+            <span>KAIO / PORTFÓLIO</span>
+            <span class="terminal-status">ROTA INVÁLIDA</span>
+          </div>
+          <div class="error-terminal-body" aria-hidden="true">
+            <p><span class="terminal-muted">~/portfolio</span> <b>$</b> localizar-página</p>
+            <p>
+              <span class="terminal-key">status</span>
+              <span class="terminal-error">não encontrada</span>
+            </p>
+            <p><span class="terminal-key">rota</span> <span id="requested-path">/</span></p>
+            <p class="terminal-cursor">aguardando novo caminho<span>_</span></p>
+          </div>
+        </div>
+      </div>
+    </main>
+    <script>
+      document.getElementById('requested-path').textContent = window.location.pathname;
+    </script>
+    <script type="module" src="/src/error-robot-entry.jsx"></script>
+  </body>
+</html>
