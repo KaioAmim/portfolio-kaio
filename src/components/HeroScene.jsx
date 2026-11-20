@@ -58,33 +58,38 @@ export default function HeroScene({ paused = false, onReady, errorMode = false, 
         mask.width = width;
         mask.height = height;
         const maskCtx = mask.getContext('2d');
-        maskCtx.strokeStyle = '#fff';
+        const sourcePixels = hologramCtx.getImageData(0, 0, width, height);
+        const maskPixels = maskCtx.createImageData(width, height);
+        for (let i = 0; i < sourcePixels.data.length; i += 4) {
+          const luminance =
+            0.2126 * sourcePixels.data[i] +
+            0.7152 * sourcePixels.data[i + 1] +
+            0.0722 * sourcePixels.data[i + 2];
+          const alpha = Math.max(0, Math.min(255, (luminance - 8) * 5));
+          maskPixels.data[i] = 255;
+          maskPixels.data[i + 1] = 255;
+          maskPixels.data[i + 2] = 255;
+          maskPixels.data[i + 3] = alpha * (sourcePixels.data[i + 3] / 255);
+        }
+        maskCtx.putImageData(maskPixels, 0, 0);
+        const clip = document.createElement('canvas');
+        clip.width = width;
+        clip.height = height;
+        const clipCtx = clip.getContext('2d');
         maskCtx.fillStyle = '#fff';
-        maskCtx.lineCap = 'round';
-        maskCtx.lineJoin = 'round';
-        // Keep only the K and A strokes; the source logo's triangle stays out.
-        maskCtx.fillRect(270, 352, 38, 250);
-        maskCtx.lineWidth = 42;
-        maskCtx.beginPath();
-        maskCtx.moveTo(326, 466);
-        maskCtx.lineTo(462, 352);
-        maskCtx.stroke();
-        maskCtx.lineWidth = 48;
-        maskCtx.beginPath();
-        maskCtx.moveTo(340, 466);
-        maskCtx.lineTo(481, 602);
-        maskCtx.stroke();
-        maskCtx.lineWidth = 42;
-        maskCtx.beginPath();
-        maskCtx.moveTo(475, 551);
-        maskCtx.lineTo(600, 362);
-        maskCtx.lineTo(728, 580);
-        maskCtx.stroke();
-        maskCtx.lineWidth = 25;
-        maskCtx.beginPath();
-        maskCtx.moveTo(521, 526);
-        maskCtx.quadraticCurveTo(590, 500, 663, 526);
-        maskCtx.stroke();
+        // Keep the KA region and cut away the triangle around it.
+        clipCtx.beginPath();
+        clipCtx.moveTo(265, 345);
+        clipCtx.lineTo(645, 345);
+        clipCtx.lineTo(670, 390);
+        clipCtx.lineTo(725, 500);
+        clipCtx.lineTo(760, 610);
+        clipCtx.lineTo(250, 610);
+        clipCtx.lineTo(262, 470);
+        clipCtx.closePath();
+        clipCtx.fill();
+        maskCtx.globalCompositeOperation = 'destination-in';
+        maskCtx.drawImage(clip, 0, 0);
         hologramCtx.globalCompositeOperation = 'destination-in';
         hologramCtx.drawImage(mask, 0, 0);
         hologramCtx.globalCompositeOperation = 'source-in';
