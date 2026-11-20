@@ -11,7 +11,7 @@ npm run build
 npm run preview
 ```
 
-O comando `npm run build` gera o site estático em `dist/`, incluindo as páginas personalizadas de erro 404 e 500.
+O comando `npm run build` gera o site estático em `dist/`, incluindo as páginas personalizadas de erro 404 e 500 e a tela de recuperação em `/recuperacao.html`.
 
 ## Estrutura
 

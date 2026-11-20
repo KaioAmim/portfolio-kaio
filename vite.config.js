@@ -10,6 +10,7 @@ export default defineConfig({
         index: fileURLToPath(new URL('./index.html', import.meta.url)),
         404: fileURLToPath(new URL('./404.html', import.meta.url)),
         500: fileURLToPath(new URL('./500.html', import.meta.url)),
+        recovery: fileURLToPath(new URL('./recuperacao.html', import.meta.url)),
       },
     },
   },

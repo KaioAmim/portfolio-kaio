@@ -1,7 +1,7 @@
 import Brand from './Brand';
 import { Component, useEffect, useState } from 'react';
 import { WifiOff, RefreshCw, Mail, Terminal } from 'lucide-react';
-export function StatusPage({ offline = false }) {
+export function StatusPage({ offline = false, onRetry }) {
   return (
     <main className="status-page">
       <Brand href="/" />
@@ -19,7 +19,10 @@ export function StatusPage({ offline = false }) {
           : 'O portfólio encontrou um problema. Tente carregar a página novamente em alguns instantes.'}
       </p>
       <div className="status-actions">
-        <button className="button button-primary" onClick={() => location.reload()}>
+        <button
+          className="button button-primary"
+          onClick={onRetry || (() => location.reload())}
+        >
           <RefreshCw size={17} />
           Tentar novamente
         </button>

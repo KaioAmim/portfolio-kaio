@@ -3,8 +3,10 @@ import { useEffect, useRef, useState } from 'react';
 const views = [0, Math.PI / 4, Math.PI / 2, Math.PI];
 export default function HeroScene({ paused = false, onReady, errorMode = false, errorCode = 404 }) {
   const pausedRef = useRef(paused);
+  const wakeFrameRef = useRef(null);
   useEffect(() => {
     pausedRef.current = paused;
+    wakeFrameRef.current?.();
   }, [paused]);
   const readyRef = useRef(onReady);
   const canvasRef = useRef(null);
@@ -14,6 +16,7 @@ export default function HeroScene({ paused = false, onReady, errorMode = false, 
   function selectView(index) {
     target.current = { yaw: views[index], pitch: -0.08 };
     setView(index);
+    wakeFrameRef.current?.();
   }
   function down(e) {
     e.currentTarget.setPointerCapture(e.pointerId);
@@ -29,6 +32,7 @@ export default function HeroScene({ paused = false, onReady, errorMode = false, 
     drag.current.x = e.clientX;
     drag.current.y = e.clientY;
     setView(-1);
+    wakeFrameRef.current?.();
   }
   function up(e) {
     drag.current = null;
@@ -39,35 +43,75 @@ export default function HeroScene({ paused = false, onReady, errorMode = false, 
     const canvas = canvasRef.current,
       ctx = canvas.getContext('2d');
     const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+    const lowPowerDevice =
+      matchMedia('(max-width: 600px)').matches ||
+      (navigator.hardwareConcurrency > 0 && navigator.hardwareConcurrency <= 4) ||
+      (navigator.deviceMemory > 0 && navigator.deviceMemory <= 4);
+    const frameDelay = lowPowerDevice ? 1000 / 20 : 1000 / 30;
     let width = 0,
       height = 0,
-      frame,
+      frame = null,
+      frameTimer = null,
       last = 0,
       time = 0,
       rendered = false,
       yaw = 0,
       pitch = -0.08,
       visible = true;
+    const stopFrame = () => {
+      if (frame !== null) cancelAnimationFrame(frame);
+      if (frameTimer !== null) clearTimeout(frameTimer);
+      frame = null;
+      frameTimer = null;
+    };
+    const scheduleFrame = () => {
+      if (frame !== null || frameTimer !== null || !visible || document.hidden || !width || !height)
+        return;
+      if (
+        pausedRef.current &&
+        rendered &&
+        Math.abs(target.current.yaw - yaw) < 0.001 &&
+        Math.abs(target.current.pitch - pitch) < 0.001
+      )
+        return;
+      frameTimer = window.setTimeout(() => {
+        frameTimer = null;
+        if (visible && !document.hidden) frame = requestAnimationFrame(draw);
+      }, frameDelay);
+    };
+    const wakeFrame = () => {
+      stopFrame();
+      if (visible && !document.hidden && width && height) frame = requestAnimationFrame(draw);
+    };
+    wakeFrameRef.current = wakeFrame;
     const observer = new IntersectionObserver(([entry]) => {
       visible = entry.isIntersecting;
+      if (visible) wakeFrame();
+      else stopFrame();
     });
     observer.observe(canvas);
     const resize = new ResizeObserver(([entry]) => {
       rendered = false;
       width = entry.contentRect.width;
       height = entry.contentRect.height;
-      const dpr = Math.min(devicePixelRatio, 2);
+      const dpr = Math.min(devicePixelRatio, lowPowerDevice ? 1.25 : 2);
       canvas.width = width * dpr;
       canvas.height = height * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      wakeFrame();
     });
     resize.observe(canvas);
+    const onVisibilityChange = () => {
+      if (document.hidden) stopFrame();
+      else wakeFrame();
+    };
+    document.addEventListener('visibilitychange', onVisibilityChange);
     // Each contour consists of real XYZ vertices, projected only after rotation.
     const meshes = [];
     const add = (center, scale, box = 1, brain = false, taper = 0) => {
       const rows = [],
-        columns = 24,
-        levels = brain ? 20 : 14;
+        columns = lowPowerDevice ? 16 : 24,
+        levels = lowPowerDevice ? (brain ? 14 : 10) : brain ? 20 : 14;
       const power = (v) => Math.sign(v) * Math.pow(Math.abs(v), box);
       for (let j = 0; j <= levels; j++) {
         const lat = (j / levels) * Math.PI,
@@ -94,16 +138,17 @@ export default function HeroScene({ paused = false, onReady, errorMode = false, 
     add([0.75, -0.26, 0], [0.1, 0.2, 0.19]);
     add([0, 0.22, 0], [0.17, 0.18, 0.18]);
     function draw(now = 0) {
-      frame = requestAnimationFrame(draw);
-      if (now - last < 1000 / 30) return;
+      frame = null;
       const dt = Math.min((now - last) / 1000, 0.06);
       last = now;
       if (!visible || document.hidden || !width || !height) return;
+      const settled =
+        Math.abs(target.current.yaw - yaw) < 0.001 &&
+        Math.abs(target.current.pitch - pitch) < 0.001;
       if (
         pausedRef.current &&
         rendered &&
-        Math.abs(target.current.yaw - yaw) < 0.001 &&
-        Math.abs(target.current.pitch - pitch) < 0.001
+        settled
       )
         return;
       rendered = true;
@@ -350,11 +395,14 @@ export default function HeroScene({ paused = false, onReady, errorMode = false, 
         ctx.arc(p[0], p[1], i % 4 ? 0.8 : 1.6, 0, Math.PI * 2);
         ctx.fill();
       }
+      if (!pausedRef.current || !settled) scheduleFrame();
     }
-    draw();
+    wakeFrame();
     readyRef.current?.();
     return () => {
-      cancelAnimationFrame(frame);
+      stopFrame();
+      if (wakeFrameRef.current === wakeFrame) wakeFrameRef.current = null;
+      document.removeEventListener('visibilitychange', onVisibilityChange);
       observer.disconnect();
       resize.disconnect();
     };
@@ -492,6 +540,7 @@ export default function HeroScene({ paused = false, onReady, errorMode = false, 
                       ),
                     );
                     setView(-1);
+                    wakeFrameRef.current?.();
                   }
                 }
               }

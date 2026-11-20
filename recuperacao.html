@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#111016" />
+    <script>
+      try {
+        document.documentElement.dataset.theme = localStorage.getItem('kaio-theme') || 'dark';
+      } catch {
+        document.documentElement.dataset.theme = 'dark';
+      }
+    </script>
+    <title>Recuperação | Kaio Amim</title>
+    <link rel="icon" type="image/svg+xml" href="/brand/logo-ka-symbol.svg" />
+  </head>
+  <body>
+    <div id="recovery-root"></div>
+    <script type="module" src="/src/recovery-entry.jsx"></script>
+  </body>
+</html>
