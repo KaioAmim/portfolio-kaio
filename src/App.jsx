@@ -14,6 +14,7 @@ import {
   Pause,
   Play,
   MapPin,
+  Languages,
   BriefcaseBusiness,
   GraduationCap,
   Award,
@@ -209,6 +210,7 @@ export default function App() {
     };
   }, []);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [vlibrasActive, setVlibrasActive] = useState(false);
   const [aboutMenuOpen, setAboutMenuOpen] = useState(false);
   const [active, setActive] = useState('inicio');
   const [projectFilter, setProjectFilter] = useState('Todos');
@@ -222,6 +224,11 @@ export default function App() {
   const menuButton = useRef(null);
   const aboutMenuButton = useRef(null);
   const isPaused = motionEnabled === null ? reduced : !motionEnabled;
+  useEffect(() => {
+    const markClosed = () => setVlibrasActive(false);
+    window.addEventListener('portfolio:vlibras-closed', markClosed);
+    return () => window.removeEventListener('portfolio:vlibras-closed', markClosed);
+  }, []);
   useEffect(() => {
     document.documentElement.dataset.motion = isPaused ? 'reduced' : 'full';
   }, [isPaused]);
@@ -372,6 +379,21 @@ export default function App() {
               <a className="header-contact" href="#contato">
                 Contato <ArrowUpRight size={16} />
               </a>
+              <button
+                className={`vlibras-toggle${vlibrasActive ? ' is-active' : ''}`}
+                type="button"
+                aria-label={vlibrasActive ? 'Fechar VLibras' : 'Abrir VLibras'}
+                aria-pressed={vlibrasActive}
+                title={vlibrasActive ? 'Fechar VLibras' : 'Abrir VLibras'}
+                onClick={() => {
+                  const open = !vlibrasActive;
+                  setVlibrasActive(open);
+                  window.dispatchEvent(new CustomEvent('portfolio:toggle-vlibras', { detail: { open } }));
+                }}
+              >
+                <Languages size={16} aria-hidden="true" />
+                <span>VLibras</span>
+              </button>
               <button
                 className="menu-toggle icon-button"
                 ref={menuButton}
