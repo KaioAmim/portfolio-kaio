@@ -259,9 +259,9 @@ export default function HeroScene({ paused = false, onReady, errorMode = false, 
         if (hologramLogo) {
           const logoWidth = hologramLogo.width;
           const logoHeight = hologramLogo.height;
-          const topLeft = project([-0.7725, -1.822, 0.27]);
-          const topRight = project([0.7275, -1.822, 0.27]);
-          const bottomLeft = project([-0.7725, -0.622, 0.27]);
+          const topLeft = project([-0.7725, -2.002, 0.27]);
+          const topRight = project([0.7275, -2.002, 0.27]);
+          const bottomLeft = project([-0.7725, -0.802, 0.27]);
           ctx.save();
           ctx.transform(
             (topRight[0] - topLeft[0]) / logoWidth,
